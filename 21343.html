@@ -1,0 +1,238 @@
+<html>
+	<head>
+		
+		<title>Concentration game</title>
+		<script>
+			var counter1=0;
+			var counter2=0;
+			var n = 4;
+			var newgame=false;
+			function finish(){
+				//newgame = true;
+				//var time = " START GAME!! ";
+				//document.getElementById("start").value = time;
+				counter1=0;
+				counter2=0;
+				document.getElementById("efforts").innerHTML = "Incorrect Efforts: "+counter2;
+				document.getElementById("found").innerHTML = "Found: "+counter1;
+				init();
+				var url3 = "Images/CardBackImage.jpg";
+				countId=0;
+				for(var i = 0; i < n; i++){
+					for(var j = 0; j < n; j++){
+						countId++
+						document.getElementById(countId).src = url3;
+					}
+				}
+				randoms();
+				
+			}
+		
+			/*function sizeBoard(){
+				var r = alert("Please give a number for the dimensions of the board!!");
+				
+			}*/
+			
+			function newBoard(){
+				randoms();
+				// n = document.getElementById("number").value;
+				//if(n<=6){
+					//if(n % 2==0 && n!=''){
+						var y=0;
+						//var n =1;
+						//while(n%2==0){
+						/*n = prompt("Check your number", "Type your number of symbols here");
+						n = parseInt(n);
+						
+						if (isNaN(n)){
+							alert("The input cannot be parsed to a number");
+						}*/
+						//}
+						document.write("<center>");
+						document.write("<form name='f'>");
+							document.write("<table>");
+							
+								
+								for(var i = 0; i < n; i++){
+									
+									document.write("<tr>");
+									for(var j = 0; j < n; j++){
+										document.write("<td>");
+										y++;
+										var imgs = "<a href='javascript:showImage(this,"+y+")'><img style='border: 0px;' src='Images/CardBackImage.jpg' height='110' width='88' value="+y+" id="+y+"></img></a>"
+										
+										document.write(imgs);
+										document.write("</td>");
+									}
+									document.write("</tr>");
+									
+								}
+							document.write("</table>");
+							document.write("<br>");
+							document.write("<input type='button' id='start' value=' START GAME!! ' name='b' onclick='init()' style='font-weight:bold;font-size:larger;color:#330066;'>");
+							document.write("<br>");
+							document.write("<br>");
+							document.write("<input type='button' value=' NEW GAME!! ' name='c' onclick='finish()' style='font-weight:bold;font-size:larger;color:#660033;'>");
+							document.write("<br>");
+							document.write("<br>");
+							document.write("<p1 id='found' style='font-weight:bold;font-size:larger;color:#3F2009;'>Found: "+counter1+"</p1>");
+							
+							document.write("<h1 id='efforts' style='font-weight:bold;font-size:larger;color:#3F2009;'>Incorrect Efforts: "+counter2+"</h1>");
+							
+						document.write("</form>");
+						document.write("</center>");
+					/*} else {
+						alert("You must give even number!!!");
+					}
+				} else {
+					alert("Too large number!!");
+				}*/
+			}
+		</script>
+		<script>
+			//timeline
+			
+			var user = new Array();
+			var temparray = new Array();
+			var clickarray = new Array(0, 0);
+			var ticker, sec, min, ctr, id, oktoclick, finished;
+			function init() {
+				
+				clearTimeout(id);
+				for (i = 0; i <= 35 ;i++) {
+					user[i] = 0;
+				}
+				ticker = 0;
+				min = 0;
+				sec = 0;
+				ctr = 0;
+				oktoclick = true;
+				finished = 0;
+				document.f.b.value = "";
+				//scramble();
+				runclk();
+				
+			}
+			function runclk() {
+			min = Math.floor(ticker/60);
+			sec = (ticker-(min*60))+'';
+			if(sec.length == 1) {sec = "0"+sec};
+			ticker++;
+			document.f.b.value = min+":"+sec;
+			if(counter1==8){
+				var countersum = counter1+counter2;
+				var counter1per = counter1*100/countersum;
+				var counter2per = counter2*100/countersum;
+				alert("Skor for Success: "+counter1per+"%   and failure: "+counter2per+"%  and the final time is:  "+min+":"+sec)
+			}else{
+				id = setTimeout('runclk()', 1000);
+			}
+			}
+			
+			
+			oktoclick = true;
+		</script>
+		<script>
+		//--Image array
+			var backImages = new Array();
+			//var memory_array = ['A','A','B','B','C','C','D','D','E','E','F','F','G','G','H','H','I','I','J','J','K','K','L','L']
+			backImages[0] = "Images/Image1.png";
+			backImages[1] = "Images/Image2.png";
+			backImages[2] = "Images/Image3.png";
+			backImages[3] = "Images/Image4.png";
+			backImages[4] = "Images/Image5.png";
+			backImages[5] = "Images/Image6.png";
+			backImages[6] = "Images/Image7.png";
+			backImages[7] = "Images/Image8.png";
+			backImages[8] = "Images/Image9.gif";
+			backImages[9] = "Images/Image10.png";
+			backImages[10] = "Images/Image11.png";
+		//----------------
+			
+			var count = 9;
+			var randomNum = new Array();
+			function randoms(){
+				for(var i=0;i<count;i++){
+					randomNum[i] =  Math.floor((Math.random() * 11)+0);
+					//randomNum[i] =  Math.floor((Math.random() * 8)+0);
+					randomNum[i+8] = randomNum[i];
+					
+				}
+			}
+			
+			var imageCount=0;
+			var clickImage = new Array();
+			var timer;
+			function showImage(theobj,imageId){
+				var imageCheck = document.getElementById(imageId);
+				//alert(imageCheck);
+				var startgam = document.getElementById('start').value;
+				if(startgam!==' START GAME!! '){
+					//alert(document.getElementById(imageId).src);
+					if(imageCheck.getAttribute('src') === 'Images/CardBackImage.jpg'){
+						//if(clickImage[1]!=imageId){
+							//if(imageCheck=="Images/CardBackImage.jpg"){
+								var url = backImages[randomNum[imageId]];
+								document.getElementById(imageId).src = url;
+								imageCount++;
+								clickImage[imageCount]=imageId;
+								
+								
+								if(imageCount==2 ){
+										imageCount=0;
+										timer=false;
+										if((backImages[randomNum[clickImage[1]]]!=backImages[randomNum[clickImage[2]]])){
+												//setTimeout('alert("HI")',5000);
+												//wait(2000);
+												counter2++;
+												document.getElementById("efforts").innerHTML = "Incorrect Efforts: "+counter2;
+												setTimeout('twoClicks()',600);
+												
+										} else{
+											counter1++;
+											document.getElementById("found").innerHTML = "Found: "+counter1;
+										}
+										
+								}	
+						//}	
+					}
+				//}
+				} else{
+					alert("Press Start game!!");
+				}
+			}	
+			
+			function twoClicks(){
+				
+				//document.getElementById("efforts").innerHTML = "Efforts: "+counter2;
+				var url2 = "Images/CardBackImage.jpg";
+				document.getElementById(clickImage[2]).src = url2;
+				document.getElementById(clickImage[1]).src = url2;
+			}
+			
+		</script>
+	</head>
+	<body>
+		<center>
+			<br>
+			<img src='Images/CenterImage.jpg'></img>
+			<br>
+			<input type="button" value=" PLAY  " name="starting" onclick="newBoard();" style="font-weight:bold;font-size:xx-large;background-color:#6666FF;color:#FFFFFF;">
+			<script>
+				/*<br>
+				<img src='Images/CenterImage.jpg'></img>
+				<br>
+				<h1 style='font-weight:bold;font-size:xx-large;color:#6666FF;'>Please give an even number! </h1>
+				<input style='font-weight:bold;font-size:medium;' type='text' value='' name='number' id='number'/>
+				<br>
+				<br>
+				<input type='submit' value='OK' style='text-align:center;font-weight:bold;font-size:large;background-color:#6666FF;color:#FFFFFF;' onclick='newBoard() ;'/>
+			*/
+			</script>
+				
+			
+		</center>
+		
+		
+	</body>
+</html>
